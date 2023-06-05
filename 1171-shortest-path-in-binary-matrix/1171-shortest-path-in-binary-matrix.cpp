@@ -1,35 +1,29 @@
 class Solution {
 public:
-    int shortestPathBinaryMatrix(vector<vector<int>>& g) {
-        int n=g.size();
-        if(g[0][0] || g[n-1][n-1])
-        {
+    int shortestPathBinaryMatrix(vector<vector<int>>& grid) {
+        int n=grid.size();
+        if(grid[0][0]==1){
             return -1;
         }
-        g[0][0]=1;
-        queue<pair<int,int>>q;
-        q.push({0,0});
-        int t=0;
-        while(q.size()){
-            int k=q.size();
-            t++;
-            while(k--){
-                int x=q.front().first;
-                int y=q.front().second;
-                q.pop();
-                if(x==n-1 && y==n-1)return t;
-                int dx[8]={1,-1,0,0,1,1,-1,-1};
-                int dy[8]={0,0,1,-1,1,-1,1,-1};
-                for(int i=0;i<8;i++){
-                    int nx=x+dx[i];
-                    int ny=y+dy[i];
-                    if(nx>=0 && nx<n && ny>=0 && ny<n && g[nx][ny]==0){
-                        g[nx][ny]=1;
-                        q.push({nx,ny});
-                    }
+        vector<vector<int>> dis(n,vector<int>(n,1e5));
+        queue<pair<pair<int,int>,int>> q;
+        q.push({{0,0},1});
+        dis[0][0]=1;
+        int dj[]={0,1,1,1,0,-1,-1,-1};
+        int di[]={1,1,0,-1,-1,-1,0,1};
+        while(!q.empty()){
+            auto x=q.front();
+            q.pop();
+            for(int i=0;i<8;i++){
+                int xi=x.first.first+di[i];
+                int xj=x.first.second+dj[i];
+                int dist=x.second;
+                if(xi>=0 && xj>=0 && xi<n && xj<n && !grid[xi][xj] && dist+1<dis[xi][xj]){
+                    dis[xi][xj]=dist+1;
+                    q.push({{xi,xj},dist+1});
                 }
             }
         }
-        return -1;
+        return dis[n-1][n-1]==1e5?-1:dis[n-1][n-1];
     }
 };
