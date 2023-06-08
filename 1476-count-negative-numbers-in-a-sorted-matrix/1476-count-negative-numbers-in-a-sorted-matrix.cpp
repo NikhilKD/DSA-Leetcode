@@ -8,7 +8,7 @@ public:
             int l=0;
             int h=m-1;
             while(l<=h){
-                int mid=l+(h-l)/2;
+                int mid=(l+h)/2;
                 if(grid[i][mid]>=0){
                     l=mid+1;
                 }else{
@@ -20,4 +20,3 @@ public:
         return count;
     }
 };
-// 1 1 -1 -2
